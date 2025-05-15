@@ -26,7 +26,6 @@ export default function Default() {
       <StarEffectAnimation />
       <ExplosionEffectAnimation />
       <ThunderEffectAnimation />
-      <BulletImpactEffect />
     </div>
   );
 }
