@@ -21,13 +21,13 @@ const API_URL = 'http://192.168.30.158:8000';
 // 목소리 ID 변환 함수
 const getVoiceId = (voiceName: string | null): number => {
   if (!voiceName) return 1;
-  
+
   const voiceMap: Record<string, number> = {
-    '대길': 1,
-    '개나리': 2,
-    '구리': 3
+    대길: 1,
+    개나리: 2,
+    구리: 3,
   };
-  
+
   return voiceMap[voiceName] || 1;
 };
 
@@ -70,27 +70,27 @@ export default function TurkeyDiceOptions() {
     }
 
     setIsCreatingGame(true);
-    
+
     try {
       // API 명세에 맞게 게임 생성 요청 데이터 구성
       const requestData = {
         people: players,
         map: board === 'Turkey' ? 1 : 2, // Turkey는 1, Arcade는 2로 변환
         voice: getVoiceId(voice),
-        player_names: generatePlayerNames(players)
+        player_names: generatePlayerNames(players),
       };
-      
+
       console.log('게임 생성 요청 전송:', requestData);
-      
+
       // HTTP API를 통해 게임 생성 요청
       const response = await axios.post(`${API_URL}/yacht/start`, requestData);
-      
+
       console.log('게임 생성 응답:', response.data);
-      
+
       // 게임 ID 저장
       const newGameId = response.data.id;
       setGameId(newGameId);
-      
+
       // 게임 생성 후 스코어보드로 이동
       navigate(`/games/TurkeyDice/score?gameId=${newGameId}`);
     } catch (error) {
@@ -115,7 +115,7 @@ export default function TurkeyDiceOptions() {
         <div>
           <img src={boardIcon} alt="보드" className={styles.iconSmall} />
           <div className={styles.badge}>
-            {board === 'Turkey' ? "꼬끼오 결투장" : "아케이드 결투장"}
+            {board === 'Turkey' ? '꼬끼오 결투장' : '아케이드 결투장'}
           </div>
         </div>
         <div>
@@ -131,10 +131,17 @@ export default function TurkeyDiceOptions() {
       >
         {isCreatingGame ? '게임 생성 중...' : '게임 시작'}
       </Button>
-      
+
       {/* 연결 상태 표시 (개발 중에만 사용, 배포 시 제거) */}
       {process.env.NODE_ENV === 'development' && (
-        <div className={styles.connectionStatus} style={{ marginTop: '10px', fontSize: '12px', color: isConnected ? 'green' : 'red' }}>
+        <div
+          className={styles.connectionStatus}
+          style={{
+            marginTop: '10px',
+            fontSize: '12px',
+            color: isConnected ? 'green' : 'red',
+          }}
+        >
           {isConnected ? '서버 연결됨' : '서버 연결 중...'}
         </div>
       )}
